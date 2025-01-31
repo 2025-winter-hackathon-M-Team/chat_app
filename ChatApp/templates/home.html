@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block title %}
+<title>home | I Talk</title>
+{% endblock %} 
+{% block header-edit %}{% endblock %}
+{% block body %}
+<div class="main-container">
+    <h1 class="channels-title">CHANNELS</h1>
+    <!-- 各部屋の名前が並ぶ -->
+    <div class="main-categories">
+        <ul>
+            {% for main_category in main_categories %}
+            <li>
+                <a href="/channels/{{ main_category.main_category_name }}" role="button">
+                    {{ main_category.main_category_name }}
+                </a>
+            </li>
+            {% endfor %} 
+        </ul>
+    </div>
+    </div>
+</div>
+{% endblock %}
+{% brock script %} {% endblock %}

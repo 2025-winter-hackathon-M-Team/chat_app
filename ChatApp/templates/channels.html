@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% block title %}
+<!-- titleの名前を決める -->
+<title>名前 | I Talk</title>
+{% endblock %} 
+{% block header-edit %}{% endblock %}
+{% block body %}
+<div class="main-container">
+    <!-- 各部屋の名前が並ぶ -->
+    <div class="sub-categories">
+        <ul>
+            <!-- クリックしたらモーダル表示 -->
+            <li>
+                <a id="create-channel-modalOpen">部屋を追加</a>
+            </li>
+            {% for sub_category in sub_categories %}
+            <li>
+                <a href="/channels/{{ sub_category.sub_category_name }}" role="button">
+                    {{ sub_category.sub_category_name }}
+                </a>
+            </li>
+            {% endfor %} 
+        </ul>
+    </div>
+</div>
+{% endblock %}
+{% brock script %} {% endblock %}
