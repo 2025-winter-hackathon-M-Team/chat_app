@@ -1,0 +1,27 @@
+{% extends 'auth/base.html' %} {% block title %}
+<title>login</title>
+{% endblock %} {% block body %}
+<img src="{{ url_for('static',filename='img/auth.png') }}"/>
+<form method="post">
+  <h1>Welcome to I TALK</h1>
+  <div>
+    <label>Email</label>
+    <input
+      type="text"
+      placeholder="Email"
+      name="email"
+      id="email-input"
+    />
+  </div>
+  <div>
+    <label>Password</label>
+    <input
+      type="password"
+      placeholder="Password"
+      name="password"
+      id="password-input"
+    />
+  </div>
+</form>
+
+{% endblock %}
