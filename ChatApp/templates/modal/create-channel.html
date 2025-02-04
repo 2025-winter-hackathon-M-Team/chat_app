@@ -1,28 +1,40 @@
 <div id="create-channel-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <p>Add channel</p>
+            <h1>Add channel</h1>
         </div>
         <form
-
+            name="createChannelForm"
+            class="modal-body"
+            action="/channels/update/{{ sub_category_id }}"
+            method="POST"
         >
+            <label for="sub_category_name">channel name</label>
             <input
                 type="text"
                 placeholder="channel name"
                 class="channel-form-input"
-                name=""
+                name="sub_category_name"
+                autofocus
                 required
             />
+            <label for="sub_category_description">channel description</label>
             <input
                 type="text"
                 placeholder="channel description"
                 class="channel-form-input"
-                name=""
+                name="sub_category_description"
+                autofocus
+            />
+            <input
+                type="hidden"
+                name="main_category"
+                value="main_category_id"
             />
             <button class="modalClose" id="add-channel-close-bottun">
                 CHANCEL
             </button>
-            <button>OK</button>
+            <input type="submit" value="OK">
         </form>
     </div>
 </div>
