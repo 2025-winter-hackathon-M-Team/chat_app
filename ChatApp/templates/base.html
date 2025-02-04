@@ -1,43 +1,30 @@
 <!DOCTYPE html>
 <html lang="ja">
     <head>
-        <!-- metaデータを記載（文字コード、画面の幅調整、） -->
+        {% comment %} metaデータを記載（文字コード、画面の幅調整、） -->
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         {% block title %}{% endblock %}
-        <!-- CSSのリンク -->
+        {% comment %} CSSのリンク {% endcomment %}
         <link 
             rel = "stylesheet"
-            href="<!--CSSファイルのリンク書く-->"
+            href="{% comment %} CSSファイルのリンク書く {% endcomment %}"
         />
-        <!-- Google Fontsから使うフォントのリンク -->
+        {% comment %} Google Fontsから使うフォントのリンク {% endcomment %}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link 
             href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&family=Source+Code+Pro&family=Zen+Old+Mincho:wght@400;500&display=swap" 
             rel="stylesheet"
         />
-        <!-- アイコン画像のJavaScriptファイルのリンク -->
+        {% comment %} アイコン画像のJavaScriptファイルのリンク {% endcomment %}
         <script src="https://kit.fontawesome.com/86ab20f999.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <div class="page-wrapper">
-            <!-- ヘッダー -->
-            <header class="header">
-                <p class = "app-name">I Talk</p>
-                {% block header-edit %} {% endblock %}
-                <nav>
-                    <ul>
-                        <li><a href="/channels" role="button">home</a></li>
-                        <li><a href="/signout" role="button">sign-out</a></li>
-                    </ul>
-                </nav>
-            </header>
             {% block body %} {% endblock %}
             {% brock script %} {% endblock %}
-
-            <!--Javascript関連の参照タグなどを記載-->
+            {% comment %}Javascript関連の参照タグなどを記載 {% endcomment %}
         </div>
     </body>
 </html>
