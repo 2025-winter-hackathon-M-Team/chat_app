@@ -1,0 +1,14 @@
+{% extends 'error/base.html' %} {% block title %} error {% endblock %} {% block
+  body %}
+  <body>
+    <div>
+      <p>4 0 4</p>
+    </div>
+    <div>
+      <p>ページが見つかりません</p>
+      {#　ここの戻る場所はhome_viewというふうに仮で設定しています。
+      　サンプルアプリと違ってhomeとchannelsのページがあるからです。 #}
+      <a href="{{ url_for('home_view') }}">Back</a>
+    </div>
+  </body>
+  {% endblock %} {% block script %} {% endblock %}
