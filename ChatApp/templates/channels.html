@@ -1,23 +1,40 @@
 {% extends 'base.html' %} {% block title %}
-<!-- titleの名前を決める -->
-<title>名前 | I Talk</title>
+<title>channels | I Talk</title>
 {% endblock %} 
-{% block header-edit %}{% endblock %}
+{% block edit-header %}{% endblock %}
 {% block body %}
 <div class="main-container">
-    <!-- 各部屋の名前が並ぶ -->
+    {% comment %} ヘッダー {% endcomment %}
+    <header class="header">
+        <p class = "app-name">I Talk</p>
+        <nav>
+            <ul>
+                <li><a href="/channels" role="button">
+                    <i class="fa-solid fa-house"></i>home
+                </a></li>
+                <li><a href="/signout" role="button">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>sign-out
+                </a></li>
+            </ul>
+        </nav>
+    </header>
+    {% comment %} 各部屋の名前が並ぶ {% endcomment %}
     <div class="sub-categories">
         <ul>
-            <!-- クリックしたらモーダル表示 -->
+            {% comment %}クリックしたらモーダル表示 {% endcomment %}
             <li>
-                <a id="create-channel-modalOpen">部屋を追加</a>
+                <button id="create-channel-modalOpen">部屋を追加</button>
+                {% include 'modal/create-channel.html' %}
             </li>
             {% for sub_category in sub_categories %}
             <li>
-                <a href="/channels/{{ sub_category.sub_category_name }}" role="button">
+                <a href="/channels/{{ main_category_id }}/{{ sub_category.sub_category_id }}" role="button">
                     {{ sub_category.sub_category_name }}
                 </a>
             </li>
+            <p id="sub_category_description">
+                {{ sub_category.sub_category_description }}
+            </p>
             {% endfor %} 
         </ul>
     </div>
