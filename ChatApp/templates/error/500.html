@@ -1,0 +1,14 @@
+{% extends 'error/base.html' %} {% block title %} error {% endblock %} {% block
+  body %}
+  <body>
+    <div>
+      <p>5 0 0</p>
+    </div>
+    <div>
+      <p>エラーが発生しました。</p>
+      <p>管理者にお問い合わせください。</p>
+      {#　404と同じです。 #}
+      <a href="{{ url_for('home_view') }}">Back</a>
+    </div>
+  </body>
+  {% endblock %} {% block script %} {% endblock %}
