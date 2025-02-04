@@ -1,10 +1,57 @@
 {% extends 'base.html' %} {% block title %}
 <title>message | I Talk</title>
 {% endblock %} 
-{% block header-edit %}{% endblock %}
 {% block body %}
 <div class="main-container">
-    
+    <header id="chat-header">
+        <p class="chat-name">{{ sub_categories.sub_category_name }}</p>
+        {% comment %}  もしuidとチャンネル作成者が同じなら編集可能 {% endcomment %}
+        {% if users.uid == sub_categories.uid %}
+        <button id="update-channel-modalOpen">
+            <i class="fa-solid fa-pencil"></i>Edit
+        </button>
+        {% include 'modal/update-channel.html' %}
+        {% endif %}
+        <nav>
+            <ul>
+                <li><a href="/channels" role="button">
+                    <i class="fa-solid fa-house"></i>home
+                </a></li>
+                <li><a href="/signout" role="button">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>sign-out
+                </a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="message-area">
+        {%if messages|length > 0 %}
+            {% for message in messages %}
+            <div class="user-name">{{message.user-name}}</div>
+            <div class="message-box">{{ message.message }}</div>
+            {% endfor %}
+        {% else %}
+        <p id="no-message">まだメッセージがありません</p>
+        {% endif %}
+    </div>
+    <div class="typing-box-wrapper">
+        <form 
+            name="newMessageForm"
+            class="typing-box" 
+            action="/channels/{{ main_category_id }}/{{ sub_category_id }}"
+            method="POST"
+        >
+            <textarea name="message" id="message" autofocus></textarea>
+            <input type="hidden" name="user_id" value="{{ uid }}" />
+            <input 
+                type="hidden" 
+                name="sub_category" 
+                value="{{ sub_category_id }}"
+            />
+            <button type="submit" id="add-message-button">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
 </div>
 {% endblock %}
 {% brock script %} {% endblock %}
