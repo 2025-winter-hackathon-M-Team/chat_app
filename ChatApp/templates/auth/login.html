@@ -5,7 +5,7 @@
 <form method="post">
   <h1>Welcome to I TALK</h1>
   <div>
-    <label>Email</label>
+    <label for="email-input">Email</label>
     <input
       type="text"
       placeholder="Email"
@@ -14,7 +14,7 @@
     />
   </div>
   <div>
-    <label>Password</label>
+    <label for="password-input">Password</label>
     <input
       type="password"
       placeholder="Password"
@@ -22,6 +22,23 @@
       id="password-input"
     />
   </div>
+  <div>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+    <button class="auth-button pink">LOGIN</button>
+    <p>
+      Don't have an account?  
+      <a href="{{ url_for('signup_view') }}">
+      Sign up here
+      </a>
+    </p>
+  </div>
+
 </form>
 
 {% endblock %}
