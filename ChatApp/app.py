@@ -10,8 +10,9 @@ from  flask_login import  LoginManager,login_user,logout_user,login_required,cur
 from werkzeug.security import generate_password_hash, check_password_hash
 #パスワードを安全に扱う為の関数
 
-from flask_mysqldb import MYSQL
+from flask_mysqldb import MySQL
 
+from werkzeug.security import check_password_hash
 
 EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 #メールアドレスの形式を検証する
@@ -32,8 +33,13 @@ app.config['MYSQL_PASSWORD'] = 'your_password'
 app.config['MYSQL_DB'] ='your_database'
 
 
-mysql = MYSQL(app)
+mysql = MySQL(app)
 socketio = SocketIO(app)
+
+
+if __name__ == 'main':
+    socketio.run(app,host="0.0.0.0",debug=True)
+
 
 @app.route("/",methods=["GET"])
 def jump():
@@ -61,16 +67,15 @@ def login_process():
         flash('メールアドレスを入力してください')
         return redirect(url_for('login_view'))  
     
-    user = find_by_email(cls, email);
+    user = User.find_by_email(email)
     if user is None:
             flash('ユーザーが存在しません')
             return redirect(url_for('login_view')) 
         
-    #パスワードのハッシュ化
-    from werkzeug.security import check_password_hash
+    
     
     if not check_password_hash(user["password"], password):
-        ('パスワードが間違っています！')
+        flash('パスワードが間違っています！')
         return redirect(url_for('login_view'))
 
     #セッションの設定
@@ -84,7 +89,89 @@ def logout():
     session.clear()
     return redirect(url_for('login_view'))
 
-@socketio.on('message')
-def handle_message(msg):
-    emit('message',msg,broadcast=True)
+@socketio.on('chat_message')
+def handle_message(data):
+    username = data.get('username', 'Anonymous')  # ユーザー名がない場合は 'Anonymous'
+    message = data.get('message', '')
+    
+    # メッセージの保存（オプション）
+    cursor = mysql.connection.cursor()
+    cursor.execute("INSERT INTO messages (username, content) VALUES (%s, %s)", (username, message))
+    mysql.connection.commit()
+    
+    emit('chat_message', {'username': username, 'message': message}, broadcast=True)
 
+#チャットルームの作成
+@app.route('/create_room', methods=['POST'])
+@login_required
+def create_room():
+    name = request.form.get('name')
+    category_id = request.form.get('category_id')
+
+    if not name or not category_id:
+        flash('ルーム名とカテゴリを入力してください')
+        return redirect(url_for('room_list'))
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("INSERT INTO chat_rooms (name, category_id) VALUES (%s, %s)", (name, category_id))
+    mysql.connection.commit()
+
+    flash('チャットルームが作成されました')
+    return redirect(url_for('room_list'))
+
+#チャットルームの編集
+@app.route('/update_room/<int:room_id>', methods=['POST'])
+@login_required
+def update_room(room_id):
+    new_name = request.form.get('new_name')
+    new_description = request.form.get('new_description')
+    new_category_id = request.form.get('new_category_id')
+
+    if not new_name:
+        flash('新しいルーム名を入力してください')
+        return redirect(url_for('room_list'))
+
+    cursor = mysql.connection.cursor()
+    
+    # 更新対象のカラムを選択的に変更
+    if new_description and new_category_id:
+        cursor.execute("UPDATE chat_rooms SET name = %s, description = %s, category_id = %s WHERE id = %s",
+                       (new_name, new_description, new_category_id, room_id))
+    elif new_description:
+        cursor.execute("UPDATE chat_rooms SET name = %s, description = %s WHERE id = %s",
+                       (new_name, new_description, room_id))
+    elif new_category_id:
+        cursor.execute("UPDATE chat_rooms SET name = %s, category_id = %s WHERE id = %s",
+                       (new_name, new_category_id, room_id))
+    else:
+        cursor.execute("UPDATE chat_rooms SET name = %s WHERE id = %s",
+                       (new_name, room_id))
+
+    mysql.connection.commit()
+    flash('チャットルームが更新されました')
+    return redirect(url_for('room_list'))
+
+#メッセージの送信
+@socketio.on('send_message')
+def send_message(data):
+    username = current_user.username  # ログインユーザーの名前
+    message = data['message']
+    room_id = data['room_id']
+
+    cursor = mysql.connection.cursor()
+    cursor.execute("INSERT INTO messages (username, room_id, content) VALUES (%s, %s, %s)", (username, room_id, message))
+    mysql.connection.commit()
+
+    emit('receive_message', {'username': username, 'message': message}, room=room_id)
+
+
+#メッセージの削除
+@app.route('/delete_message/<int:message_id>', methods=['POST'])
+@login_required
+def delete_message(message_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM messages WHERE id = %s", (message_id,))
+    mysql.connection.commit()
+
+    flash('メッセージが削除されました')
+    return redirect(url_for('chat_view'))
