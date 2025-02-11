@@ -24,3 +24,6 @@ shellescape==3.8.1
 urllib3==1.26.12
 webassets==2.0
 Werkzeug==2.2.2
+flask_socketio==5.5.1
+flask_login==0.6.3
+flask_mysqldb==2.0.0
