@@ -37,9 +37,6 @@ mysql = MySQL(app)
 socketio = SocketIO(app)
 
 
-if __name__ == 'main':
-    socketio.run(app,host="0.0.0.0",debug=True)
-
 
 @app.route("/",methods=["GET"])
 def jump():
@@ -175,3 +172,11 @@ def delete_message(message_id):
 
     flash('メッセージが削除されました')
     return redirect(url_for('chat_view'))
+
+@app.route('/register', methods=['GET'])
+def signup_view():	
+    return render_template('auth/signup.html')
+
+if __name__ == '__main__':
+    socketio.run(app,host="0.0.0.0",debug=True,allow_unsafe_werkzeug=True)
+
