@@ -13,6 +13,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mysqldb import MySQL
 
 from werkzeug.security import check_password_hash
+from models import User, Main_category, Sub_category, Message
+
 
 EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 #メールアドレスの形式を検証する
@@ -173,9 +175,45 @@ def delete_message(message_id):
     flash('メッセージが削除されました')
     return redirect(url_for('chat_view'))
 
+# サインアップページ表示
 @app.route('/register', methods=['GET'])
 def signup_view():	
     return render_template('auth/signup.html')
+
+# サインアップ処理
+@app.route('/register', methods=['POST'])
+def signup_process():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    password_confirmation = request.form.get('password-confirmation')
+    
+    if name == '' or email == '' or password == '' or password_confirmation == '':
+        flash('未入力の項目があります。')
+    
+    if password != password_confirmation:
+        flash('パスワードが一致しません。')
+
+    if re.match(EMAIL_PATTERN, email) is None:
+        flash('メールアドレスが正しい形式で入力されていません。')
+
+    password = generate_password_hash(password)
+    registered_user = User.find_by_email(email)
+    print(registered_user) # for test
+    if registered_user != None:
+        flash('既に登録済みです。ログインページからログインして下さい。')
+    else:
+        User.create(name, email, password)
+        user_info = User.find_by_email(email)
+        session['uid'] = str(user_info["id"])
+        return redirect(url_for('main_category_view')) 
+    return redirect(url_for('login_view'))
+
+@app.route('/channels',methods=['GET'])
+def main_category_view():
+    main_categories = Main_category.get_all()
+    print('test') # for test
+    return render_template('home.html', main_categories=main_categories)
 
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",debug=True,allow_unsafe_werkzeug=True)
