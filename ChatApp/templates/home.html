@@ -3,7 +3,7 @@
 {% endblock %} 
 {% block body %}
 <div class="main-container">
-    {% comment %} ヘッダー {% endcomment %}
+    {# ヘッダー #}
     <header class="header">
         <p class = "app-name">I Talk</p>
         <nav>
@@ -19,7 +19,7 @@
     </header>
     <div class="contents">
         <h1 class="channels-title">CHANNELS</h1>
-        {% comment %} 各部屋の名前が並ぶ {% endcomment %}
+        {# 各部屋の名前が並ぶ #}
         <div class="main-categories">
             <ul>
                 {% for main_category in main_categories %}
@@ -35,4 +35,4 @@
     </div>
 </div>
 {% endblock %}
-{% brock script %} {% endblock %}
+{% block script %} {% endblock %}
