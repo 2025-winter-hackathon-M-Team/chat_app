@@ -5,7 +5,7 @@
 <div class="main-container">
     <header id="chat-header">
         <p class="chat-name">{{ sub_categories.sub_category_name }}</p>
-        {% comment %}  もしuidとチャンネル作成者が同じなら編集可能 {% endcomment %}
+        {# もしuidとチャンネル作成者が同じなら編集可能 #}
         {% if users.uid == sub_categories.uid %}
         <button id="update-channel-modalOpen">
             <i class="fa-solid fa-pencil"></i>Edit

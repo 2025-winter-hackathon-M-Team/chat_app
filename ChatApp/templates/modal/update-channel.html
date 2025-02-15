@@ -1,7 +1,7 @@
 <div id="update-channel-modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h1>Edit channel</h1>
+            <h2 class="modal-header-title">Edit channel</h2>
         </div>
         <form
             name="updateChannelForm"
@@ -9,7 +9,7 @@
             action="/channels/update_channel"
             method="POST"
         >
-            <label for="sub_category_name">channel name</label>
+            <label for="sub_category_name" class="label-name">channel name</label>
             <input
                 type="text"
                 placeholder="channel name"
@@ -26,16 +26,17 @@
                 name="sub_category_description"
                 autofocus
             />
-            {% comment %} 再検討 {% endcomment %}
             <input
                 type="hidden"
                 name="main_category"
                 value="main_category_id"
             />
-            <button class="modalClose" id="add-channel-close-bottun">
-                CHANCEL
-            </button>
-            <input type="submit" value="OK">
+            <div class="modal-button">
+                <button class="modalClose" id="add-channel-close-bottun">
+                    CHANCEL
+                </button>
+                <input type="submit" value="OK" class="modal-submit-button">
+            </div>
         </form>
     </div>
 </div>

@@ -1,0 +1,35 @@
+/* main categoryを表示するホームページのCSS */
+
+/* ========================== ヘッダー部分 ============================= */
+header {
+    background-color: #77CAD4;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 80px;
+    width: 100%;
+    position: fixed;
+}
+
+.app-name {
+    font-family: "Libre Bodoni", serif;
+    color: white;
+    font-size: 30px;
+}
+
+header ul {
+    font-family: "Libre Bodoni", serif;
+    display: flex;
+    color: white;
+    gap: 40px;
+}
+
+
+.channels-title {
+    font-family: "Libre Bodoni", serif;
+    color: #77CAD4;
+    border-bottom: 3px solid #77CAD4;
+    display: inline-block;
+}
+
+/* ========================== main-containerエリア ============================= */
