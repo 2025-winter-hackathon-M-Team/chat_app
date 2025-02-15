@@ -1,6 +1,11 @@
-{% extends 'base.html' %} {% block title %}
+{% extends "base.html" %} {% block title %}
 <title>home | I Talk</title>
-{% endblock %} 
+{% endblock %} {% block css_link %}
+<link
+rel="stylesheet"
+href="{{ url_for('static', filename='css/home.css') }}"
+/>
+{% endblock %}
 {% block body %}
 <div class="main-container">
     {# ヘッダー #}
@@ -8,10 +13,10 @@
         <p class = "app-name">I Talk</p>
         <nav>
             <ul>
-                <li><a href="/channels" role="button">
+                <li><a href="channels.html" role="button">
                     <i class="fa-solid fa-house"></i>home
                 </a></li>
-                <li><a href="/signout" role="button">
+                <li><a href="./auth/login.html" role="button">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>sign-out
                 </a></li>
             </ul>
@@ -35,4 +40,5 @@
     </div>
 </div>
 {% endblock %}
+
 {% block script %} {% endblock %}
