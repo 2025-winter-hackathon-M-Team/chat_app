@@ -1,0 +1,63 @@
+* {
+  float: none; /* 浮動要素無効 */
+  position: static;
+  font-family: "Libre Bodoni", "Zen Old Mincho", sans-serif; /*フォント指定*/
+  font-size: 16px; /*フォントサイズ指定*/
+  box-sizing: border-box; /* 縦、横の長さにpadding,borderの長さを含める*/
+}
+
+body {
+  margin: 0 auto;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+input,
+textarea,
+button {
+  font-size: inherit;
+  border: none;
+  outline: none;
+}
+
+textarea {
+  resize: none;
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+}
+
+li {
+  list-style: none;
+}
+
+a:hover,
+input:hover,
+button:hover {
+  cursor: pointer;
+}
+
+button{
+  border: none;
+}
+
+.main-container {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
+
