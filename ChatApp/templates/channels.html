@@ -28,7 +28,7 @@
             </li>
             {% for sub_category in sub_categories %}
             <li>
-                <a href="/channels/{{ main_category_id }}/{{ sub_category.sub_category_id }}" role="button">
+                <a href="/channels/{{ sub_category.main_category_id }}/{{ sub_category.id }}" role="button">
                     {{ sub_category.sub_category_name }}
                 </a>
             </li>

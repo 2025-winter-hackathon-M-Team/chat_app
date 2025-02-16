@@ -6,7 +6,7 @@
     <header id="chat-header">
         <p class="chat-name">{{ sub_categories.sub_category_name }}</p>
         {# もしuidとチャンネル作成者が同じなら編集可能 #}
-        {% if users.uid == sub_categories.uid %}
+        {% if uid == sub_categories.uid %}
         <button id="update-channel-modalOpen">
             <i class="fa-solid fa-pencil"></i>Edit
         </button>
@@ -26,7 +26,7 @@
     <div class="message-area">
         {%if messages|length > 0 %}
             {% for message in messages %}
-            <div class="user-name">{{message.user-name}}</div>
+            <div class="user-name">{{message.username}}</div>
             <div class="message-box">{{ message.message }}</div>
             {% endfor %}
         {% else %}
@@ -37,7 +37,7 @@
         <form 
             name="newMessageForm"
             class="typing-box" 
-            action="/channels/{{ main_category_id }}/{{ sub_category_id }}"
+            action="/channels/{{ sub_categories.main_category_id }}/{{ sub_categories.id }}"
             method="POST"
         >
             <textarea name="message" id="message" autofocus></textarea>
@@ -45,7 +45,7 @@
             <input 
                 type="hidden" 
                 name="sub_category" 
-                value="{{ sub_category_id }}"
+                value="{{ sub_categories.id }}"
             />
             <button type="submit" id="add-message-button">
                 <i class="fa-solid fa-paper-plane"></i>

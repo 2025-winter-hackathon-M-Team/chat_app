@@ -92,7 +92,7 @@ class Sub_category:
         # uidが作成者出ないと、変更できない処理はapp.pyとmodels.pyのどちらに実装するか？
         try:
             with conn.cursor() as cur:
-                sql = "UPDATE sub_categories SET sub_category_name=%s, sub_category_description=%s WHERE sub_category_id=%s;"
+                sql = "UPDATE sub_categories SET sub_category_name=%s, sub_category_description=%s WHERE id=%s;"
                 cur.execute(sql, (sub_category_name, sub_category_description, sub_category_id,))
                 conn.commit()
         except pymysql.Error as e:
@@ -108,7 +108,7 @@ class Sub_category:
         # uidが作成者出ないと、変更できない処理はapp.pyとmodels.pyのどちらに実装するか？
         try:
             with conn.cursor() as cur:
-                sql = "DELETE FROM sub_categories WHERE sub_category_id=%s;"
+                sql = "DELETE FROM sub_categories WHERE id=%s;"
                 cur.execute(sql, (sub_category_id,))
                 conn.commit()
         except pymysql.Error as e:
@@ -117,16 +117,33 @@ class Sub_category:
             abort(500) # 500でいい？これだけじゃなくて全部
         finally:
             db_pool.release(conn)
-        
+
+    @classmethod
+    def find_by_sub_category_id(cls, sub_category_id):
+        conn = db_pool.get_conn()
+
+        try:
+            with conn.cursor() as cur:
+                sql = "SELECT * FROM sub_categories WHERE id=%s;"
+                cur.execute(sql, (sub_category_id,))
+                sub_category = cur.fetchone()
+                return sub_category
+        except pymysql.Error as e:
+            print(f'エラーが発生しました。: {e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+
 class Message:
     @classmethod
-    def create(cls, uid, sub_category_id, message):
+    def create(cls, uid, username, sub_category_id, message):
         conn = db_pool.get_conn()
         # uidなどはapp.py側で取得できる？
         try:
             with conn.cursor() as cur:
-                sql = "INSERT INTO messages(uid, sub_category_id, message) VALUES(%s, %s, %s);"
-                cur.execute(sql, (uid, sub_category_id, message,))
+                sql = "INSERT INTO messages(uid, username, sub_category_id, message) VALUES(%s, %s, %s, %s);"
+                cur.execute(sql, (uid, username, sub_category_id, message,))
                 conn.commit()
         except pymysql.Error as e:
             conn.rollback()
