@@ -176,12 +176,12 @@ def delete_message(message_id):
     return redirect(url_for('chat_view'))
 
 # サインアップページ表示
-@app.route('/register', methods=['GET'])
+@app.route('/signup', methods=['GET'])
 def signup_view():	
     return render_template('auth/signup.html')
 
 # サインアップ処理
-@app.route('/register', methods=['POST'])
+@app.route('/signup', methods=['POST'])
 def signup_process():
     name = request.form.get('name')
     email = request.form.get('email')
@@ -199,7 +199,6 @@ def signup_process():
 
     password = generate_password_hash(password)
     registered_user = User.find_by_email(email)
-    print(registered_user) # for test
     if registered_user != None:
         flash('既に登録済みです。ログインページからログインして下さい。')
     else:
@@ -209,11 +208,16 @@ def signup_process():
         return redirect(url_for('main_category_view')) 
     return redirect(url_for('login_view'))
 
-@app.route('/channels',methods=['GET'])
+@app.route('/channels', methods=['GET'])
 def main_category_view():
     main_categories = Main_category.get_all()
-    print('test') # for test
     return render_template('home.html', main_categories=main_categories)
+
+# サブカテゴリページ表示
+@app.route('/channels/<cid>', methods=['GET'])
+def sub_category_view(cid):
+    sub_categories = Sub_category.find_by_main_category_id(cid)
+    return render_template('channels.html', sub_categories=sub_categories)
 
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",debug=True,allow_unsafe_werkzeug=True)

@@ -29,7 +29,7 @@ href="{{ url_for('static', filename='css/home.css') }}"
             <ul>
                 {% for main_category in main_categories %}
                 <li>
-                    <a href="/channels/{{ main_category.main_category_id }}" role="button">
+                    <a href="/channels/{{ main_category.id }}" role="button">
                         <i class="fa-regular fa-bell"></i>
                         {{ main_category.main_category_name }}
                     </a>
