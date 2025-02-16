@@ -219,6 +219,18 @@ def sub_category_view(cid):
     sub_categories = Sub_category.find_by_main_category_id(cid)
     return render_template('channels.html', sub_categories=sub_categories)
 
+# チャット画面表示
+@app.route('/channels/<cid>/<scid>', methods=['GET'])
+def chatroom_view(cid, scid):
+    print(cid)
+    uid = session.get('uid')
+    print(scid)
+    messages = Message.find_by_sub_category_id(scid)
+    print('2')
+    sub_category = Sub_category.find_by_sub_category_id(scid)
+    print('3')
+    return render_template('messages.html', uid=uid, messages=messages, sub_categories=sub_category)
+
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",debug=True,allow_unsafe_werkzeug=True)
 
