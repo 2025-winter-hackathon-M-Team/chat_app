@@ -78,8 +78,8 @@ def login_process():
         return redirect(url_for('login_view'))
 
     #セッションの設定
-    session['uid'] = user["uid"]
-    return redirect(url_for('channels_view'))
+    session['uid'] = user["id"]
+    return redirect(url_for('main_category_view'))
 
 
 #ログアウト
@@ -222,14 +222,29 @@ def sub_category_view(cid):
 # チャット画面表示
 @app.route('/channels/<cid>/<scid>', methods=['GET'])
 def chatroom_view(cid, scid):
-    print(cid)
     uid = session.get('uid')
     print(scid)
     messages = Message.find_by_sub_category_id(scid)
-    print('2')
+    if messages == '':
+        print('no message')
+    else:
+        print(messages)
+    print('test')
     sub_category = Sub_category.find_by_sub_category_id(scid)
-    print('3')
     return render_template('messages.html', uid=uid, messages=messages, sub_categories=sub_category)
+
+# メッセージを送信
+@app.route('/channels/<cid>/<scid>', methods=['POST'])
+def send_message(cid, scid):
+    uid = request.form.get('user_id')
+    user_info = User.find_by_uid(uid)
+    username = user_info["username"]
+    sub_category_id = request.form.get('sub_category')
+    message = request.form.get('message')
+    print(sub_category_id)
+    Message.create(uid, username, sub_category_id, message)
+
+    return redirect(url_for('chatroom_view', cid=cid, scid=scid))
 
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",debug=True,allow_unsafe_werkzeug=True)

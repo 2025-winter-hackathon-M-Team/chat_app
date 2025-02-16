@@ -38,6 +38,23 @@ class User:
         finally:
             db_pool.release(conn)
 
+    @classmethod
+    def find_by_uid(cls, uid):
+        conn = db_pool.get_conn()
+
+        try:
+            with conn.cursor() as cur:
+                sql = "SELECT * FROM users WHERE id=%s;"
+                cur.execute(sql, (uid,))
+                user = cur.fetchone()
+                return user # ユーザーが存在しない場合、空ではなくNoneが入る？
+        except pymysql.Error as e:
+            print(f'エラーが発生しました。: {e}')
+            abort(500) # 500でいい？これだけじゃなくて全部
+        finally:
+            db_pool.release(conn)
+
+
 class Main_category:
     @classmethod
     def get_all(cls):
