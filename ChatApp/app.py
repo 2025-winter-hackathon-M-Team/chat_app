@@ -223,13 +223,7 @@ def sub_category_view(cid):
 @app.route('/channels/<cid>/<scid>', methods=['GET'])
 def chatroom_view(cid, scid):
     uid = session.get('uid')
-    print(scid)
     messages = Message.find_by_sub_category_id(scid)
-    if messages == '':
-        print('no message')
-    else:
-        print(messages)
-    print('test')
     sub_category = Sub_category.find_by_sub_category_id(scid)
     return render_template('messages.html', uid=uid, messages=messages, sub_categories=sub_category)
 
@@ -241,10 +235,19 @@ def send_message(cid, scid):
     username = user_info["username"]
     sub_category_id = request.form.get('sub_category')
     message = request.form.get('message')
-    print(sub_category_id)
     Message.create(uid, username, sub_category_id, message)
 
     return redirect(url_for('chatroom_view', cid=cid, scid=scid))
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error/404.html'),404
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('error/500.html'),500
+
 
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",debug=True,allow_unsafe_werkzeug=True)
