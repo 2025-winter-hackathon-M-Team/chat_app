@@ -1,44 +1,49 @@
 {% extends 'auth/base.html' %} {% block title %}
 <title>login</title>
 {% endblock %} {% block body %}
-<img src="{{ url_for('static',filename='img/auth.png') }}"/>
-<form method="post">
-  <h1>Welcome to I TALK</h1>
-  <div>
-    <label for="email-input">Email</label>
-    <input
-      type="text"
-      placeholder="Email"
-      name="email"
-      id="email-input"
-    />
+<div class="auth-wrapper">
+  <div class="auth-container">
+    <img src="{{ url_for('static',filename='img/auth.png') }}"
+         class="auth-main-pic"/>
+    <div class="auth-form-wrapper">
+      <form class="auth-form" method="post">
+       <h1 class="auth-title">Welcome to I TALK</h1>
+         <div>
+            <label for="email-input">Email</label>
+            <input
+               type="text"
+               placeholder="Email"
+               name="email"
+               id="email-input"
+            />
+         </div>
+         <div>
+           <label for="password-input">Password</label>
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            id="password-input"
+           />
+        </div>
+        <div class="auth-button-container">
+          {% with messages = get_flashed_messages() %} {% if messages %}
+          <ul class="flashes">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+            {% endif %} {% endwith %}
+           <button class="auth-button">Log in</button>
+          <p class="switch-auth-mode">
+            Don't have an account?  
+            <a href="{{ url_for('signup_view') }}">
+              Sign up here
+            </a>
+          </p>
+        </div>
+      </form>
+    </div>
   </div>
-  <div>
-    <label for="password-input">Password</label>
-    <input
-      type="password"
-      placeholder="Password"
-      name="password"
-      id="password-input"
-    />
-  </div>
-  <div>
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul>
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
-    <button class="auth-button pink">LOGIN</button>
-    <p>
-      Don't have an account?  
-      <a href="{{ url_for('signup_view') }}">
-      Sign up here
-      </a>
-    </p>
-  </div>
-
-</form>
-
+</div>
 {% endblock %}
