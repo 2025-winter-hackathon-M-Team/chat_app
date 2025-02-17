@@ -1,0 +1,50 @@
+.error {
+  margin: 0;
+}
+
+.error-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--white);
+  font-family: "Libre Bodoni", "Zen Old Mincho", sans-serif;
+}
+
+.error-container {
+  height: 70%;
+  width: 70%;
+  margin: auto;
+  color: var(--mint_green);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-num {
+  font-size: 6em;
+  font-weight: 500;
+  
+}
+.error-description {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 6rem;
+}
+
+.error-button {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 18px;
+  margin-top: 1rem;
+  padding: 0.6em 6em;
+  color: var(--white);
+  background-color: var(--mint_green);
+}
+
+.error-button:hover {
+  background-color: #A3E1E8;
+} 
