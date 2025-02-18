@@ -1,11 +1,6 @@
 {% extends "base.html" %} {% block title %}
 <title>home | I Talk</title>
-{% endblock %} {% block css_link %}
-<link
-rel="stylesheet"
-href="{{ url_for('static', filename='css/home.css') }}"
-/>
-{% endblock %}
+{% endblock %} 
 {% block body %}
 <div class="main-container">
     {# ヘッダー #}
@@ -13,23 +8,33 @@ href="{{ url_for('static', filename='css/home.css') }}"
         <p class = "app-name">I Talk</p>
         <nav>
             <ul>
-                <li><a href="channels.html" role="button">
-                    <i class="fa-solid fa-house"></i>home
-                </a></li>
-                <li><a href="./auth/login.html" role="button">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>sign-out
-                </a></li>
+                <li>
+                    <a href="{{ url_for('main_category_view') }}" class="header-button">
+                        <i class="fa-solid fa-house"></i>
+                        <br>
+                        home
+                    </a>
+                </li>
+                <li class="signout-button">
+                    <a href="{{ url_for('login_view') }}" class="header-button">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <br>
+                        sign-out
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>
     <div class="contents">
-        <h1 class="channels-title">CHANNELS</h1>
+        <div>
+            <h1 class="channels-title">CHANNELS</h1>
+        </div>
         {# 各部屋の名前が並ぶ #}
         <div class="main-categories">
-            <ul>
+            <ul class="main-category-list">
                 {% for main_category in main_categories %}
                 <li>
-                    <a href="/channels/{{ main_category.main_category_id }}" role="button">
+                    <a href="/channels/{{ main_category.id }}" class="main-category-list">
                         <i class="fa-regular fa-bell"></i>
                         {{ main_category.main_category_name }}
                     </a>
