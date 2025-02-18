@@ -9,7 +9,7 @@
         {# CSSのリンク #}
         <link 
             rel = "stylesheet"
-            href="{#  CSSファイルのリンク書く #}"
+            href="{{ url_for('static' , filename='gen/bundled.css') }}"
         />
         {# Google Fontsから使うフォントのリンク #}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,9 +22,8 @@
         <script src="https://kit.fontawesome.com/86ab20f999.js" crossorigin="anonymous"></script>
     </head>
     <body>
-            {% block body %} {% endblock %}
-            {% block script %} {% endblock %}
-            {# Javascript関連の参照タグなどを記載 #}
-        </div>
+        {% block body %} {% endblock %}
+        {% block script %} {% endblock %}
+        {# Javascript関連の参照タグなどを記載 #}
     </body>
 </html>

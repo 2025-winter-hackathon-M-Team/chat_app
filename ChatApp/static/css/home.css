@@ -8,22 +8,49 @@ header {
     justify-content: space-between;
     height: 80px;
     width: 100%;
-    position: fixed;
+    font-family: "Libre Bodoni", serif;
+    /* position: fixed; */
 }
 
 .app-name {
-    font-family: "Libre Bodoni", serif;
     color: white;
+    font-size: 30px;
+    padding-left: 2%;
+}
+
+nav > ul {
+    list-style: none;
+    padding: 0;
+    margin: 17px 0 0 0;
+    display: grid;
+    height: 100px;
+    grid-template-columns: 70px 90px;
+}
+
+.header-button{
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.header-button:hover {
+    color: #dadada;
+}
+
+.header-button > i{
     font-size: 30px;
 }
 
-header ul {
-    font-family: "Libre Bodoni", serif;
+/* ========================== contentsエリア ============================= */
+.contents{
+    height: 450px;
     display: flex;
-    color: white;
-    gap: 40px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-right: 80px;
+    gap: 3rem;
 }
-
 
 .channels-title {
     font-family: "Libre Bodoni", serif;
@@ -32,4 +59,20 @@ header ul {
     display: inline-block;
 }
 
-/* ========================== main-containerエリア ============================= */
+.main-categories > ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.main-category-list {
+    font-family: "Zen Old Mincho", serif;
+    color: black;
+    text-decoration: none;
+    font-size: 30px;
+    line-height: 70px;
+}
+
+.main-category-list > i{
+    color: #77CAD4;
+}
