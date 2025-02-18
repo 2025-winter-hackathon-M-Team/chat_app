@@ -1,0 +1,109 @@
+.auth-wrapper {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Libre Bodoni", "Zen Old Mincho", sans-serif;
+}
+
+.auth-container {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background-color: var(--white)
+}
+
+.auth-form-wrapper {
+  flex-basis: 40%;
+  flex-grow: 1;
+  padding: 1rem 2rem 1rem 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: scroll;
+  background-color: var(--mint_green)
+}
+
+
+
+.auth-main-pic {
+  flex-basis: 60%;
+  height: auto;
+  object-fit: contain;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60%;
+  width: 70%;
+  margin: auto;
+}
+
+.auth-title {
+  font-weight: 400;
+  font-size: 40px;
+  margin: 0;
+  margin-bottom: 3rem;
+}
+
+.auth-form > div {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.auth-form input {
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+  line-height: 36px;
+  border-bottom: solid 0.3rem var(--gray);
+  width: 100%;
+  padding: 0.3rem 1rem;
+}
+
+.auth-form label {
+  font-size: 12px;
+}
+
+.auth-button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  margin: 1rem 0rem;
+}
+
+.auth-button {
+  width: 40%;
+  height: 10%;
+  min-height: 3rem; 
+  font-size: 20px;
+  margin-bottom: 1.5rem;
+}
+
+.switch-auth-mode {
+  font-size: 20px;
+}
+
+.switch-auth-mode a {
+  font-size: 20px;
+  padding: 0rem 0rem 0rem 1.5rem;
+}
+
+.flashes {
+  margin: 0;
+  padding-left: 0;
+  margin-bottom: 0.8rem;
+  text-align: center;
+  font-size: 16px;
+  color: var(--red)
+}

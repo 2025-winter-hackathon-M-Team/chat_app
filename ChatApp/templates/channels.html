@@ -1,9 +1,8 @@
 {% extends 'base.html' %} {% block title %}
 <title>channels | I Talk</title>
-{% endblock %} 
 {% block body %}
 <div class="main-container">
-    {% comment %} ヘッダー {% endcomment %}
+    {#  ヘッダー  #}
     <header class="header">
         <p class = "app-name">I Talk</p>
         <nav>
@@ -17,17 +16,17 @@
             </ul>
         </nav>
     </header>
-    {% comment %} 各部屋の名前が並ぶ {% endcomment %}
+    {#  各部屋の名前が並ぶ  #}
     <div class="sub-categories">
         <ul>
-            {% comment %}クリックしたらモーダル表示 {% endcomment %}
+            {# クリックしたらモーダル表示  #}
             <li>
                 <button id="create-channel-modalOpen">部屋を追加</button>
                 {% include 'modal/create-channel.html' %}
             </li>
             {% for sub_category in sub_categories %}
             <li>
-                <a href="/channels/{{ main_category_id }}/{{ sub_category.sub_category_id }}" role="button">
+                <a href="/channels/{{ sub_category.main_category_id }}/{{ sub_category.id }}" role="button">
                     {{ sub_category.sub_category_name }}
                 </a>
             </li>
@@ -39,4 +38,4 @@
     </div>
 </div>
 {% endblock %}
-{% brock script %} {% endblock %}
+{% block script %} {% endblock %}

@@ -78,8 +78,8 @@ def login_process():
         return redirect(url_for('login_view'))
 
     #セッションの設定
-    session['uid'] = user["uid"]
-    return redirect(url_for('channels_view'))
+    session['uid'] = user["id"]
+    return redirect(url_for('main_category_view'))
 
 
 #ログアウト
@@ -176,12 +176,12 @@ def delete_message(message_id):
     return redirect(url_for('chat_view'))
 
 # サインアップページ表示
-@app.route('/register', methods=['GET'])
+@app.route('/signup', methods=['GET'])
 def signup_view():	
     return render_template('auth/signup.html')
 
 # サインアップ処理
-@app.route('/register', methods=['POST'])
+@app.route('/signup', methods=['POST'])
 def signup_process():
     name = request.form.get('name')
     email = request.form.get('email')
@@ -199,7 +199,6 @@ def signup_process():
 
     password = generate_password_hash(password)
     registered_user = User.find_by_email(email)
-    print(registered_user) # for test
     if registered_user != None:
         flash('既に登録済みです。ログインページからログインして下さい。')
     else:
@@ -209,11 +208,46 @@ def signup_process():
         return redirect(url_for('main_category_view')) 
     return redirect(url_for('login_view'))
 
-@app.route('/channels',methods=['GET'])
+@app.route('/channels', methods=['GET'])
 def main_category_view():
     main_categories = Main_category.get_all()
-    print('test') # for test
     return render_template('home.html', main_categories=main_categories)
+
+# サブカテゴリページ表示
+@app.route('/channels/<cid>', methods=['GET'])
+def sub_category_view(cid):
+    sub_categories = Sub_category.find_by_main_category_id(cid)
+    return render_template('channels.html', sub_categories=sub_categories)
+
+# チャット画面表示
+@app.route('/channels/<cid>/<scid>', methods=['GET'])
+def chatroom_view(cid, scid):
+    uid = session.get('uid')
+    messages = Message.find_by_sub_category_id(scid)
+    sub_category = Sub_category.find_by_sub_category_id(scid)
+    return render_template('messages.html', uid=uid, messages=messages, sub_categories=sub_category)
+
+# メッセージを送信
+@app.route('/channels/<cid>/<scid>', methods=['POST'])
+def send_message(cid, scid):
+    uid = request.form.get('user_id')
+    user_info = User.find_by_uid(uid)
+    username = user_info["username"]
+    sub_category_id = request.form.get('sub_category')
+    message = request.form.get('message')
+    Message.create(uid, username, sub_category_id, message)
+
+    return redirect(url_for('chatroom_view', cid=cid, scid=scid))
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error/404.html'),404
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('error/500.html'),500
+
 
 if __name__ == '__main__':
     socketio.run(app,host="0.0.0.0",debug=True,allow_unsafe_werkzeug=True)
