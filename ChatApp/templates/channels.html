@@ -8,34 +8,44 @@
         <p class = "app-name">I Talk</p>
         <nav>
             <ul>
-                <li><a href="/channels" role="button">
-                    <i class="fa-solid fa-house"></i>home
-                </a></li>
-                <li><a href="/signout" role="button">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>sign-out
-                </a></li>
+                <li>
+                    <a href="{{ url_for('main_category_view') }}" class="header-button">
+                        <i class="fa-solid fa-house"></i>
+                        <br>
+                        home
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('login_view') }}" class="header-button">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <br>
+                        sign-out
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>
     {#  各部屋の名前が並ぶ  #}
-    <div class="sub-categories">
-        <ul>
+    <div class="channels-contents">
+        <div class="sub-categories">
             {# クリックしたらモーダル表示  #}
-            <li>
-                <button id="create-channel-modalOpen">部屋を追加</button>
+            <span>
+                <button class="create-channel-button" id="create-channel-modalOpen">＋ 部屋を追加</button>
                 {% include 'modal/create-channel.html' %}
-            </li>
+            </span>
             {% for sub_category in sub_categories %}
-            <li>
-                <a href="/channels/{{ sub_category.main_category_id }}/{{ sub_category.id }}" role="button">
-                    {{ sub_category.sub_category_name }}
-                </a>
-            </li>
-            <p id="sub_category_description">
-                {{ sub_category.sub_category_description }}
-            </p>
+            <div class="sub-category-list">
+                <span>
+                    <a href="/channels/{{ sub_category.main_category_id }}/{{ sub_category.id }}" class="sub-category-name">
+                        {{ sub_category.sub_category_name }}
+                    </a>
+                </span>
+                <p class="sub-category-description">
+                    {{ sub_category.sub_category_description }}
+                </p>
+            </div>
             {% endfor %} 
-        </ul>
+        </div>
     </div>
 </div>
 {% endblock %}

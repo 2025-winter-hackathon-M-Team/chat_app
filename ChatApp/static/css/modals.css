@@ -13,8 +13,13 @@
     align-items: center;
 }
 
+#create-channel-modal,
+#update-channel-modal {
+    display: none;
+}
+
 .modal-content{
-    background-color: white;
+    background-color: var(--white);
     font-family: "Libre Bodoni", serif;
     margin: 15% auto;
     width: 55%;
@@ -23,12 +28,12 @@
 }
 
 .modal-header-title{
-    color: 647173;
+    color: var(--blue_gray);
     text-decoration:underline;
-    text-decoration-color: 647173;
+    text-decoration-color: var(--blue_gray);
     font-weight: bold;
     text-align: center;
-    height: 30px;
+    padding-top: 2%;
     font-size: 30px;
 }
 
@@ -38,21 +43,21 @@
 }
 
 .label-name{
-    color: 191919;
+    color: var(--light_black);
     opacity: 0.6;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
-    padding-left: 2rem;
+    padding-left: 3rem;
 
 }
 
 .channel-form-input{
     width: 80%;
-    margin: 2px 0 15px 50px;
+    margin: 5px 0 15px 10%;
     padding: 0.6rem;
     border-radius: 8px;
-    border-color: a5a5a5;
-    background-color: ebeaea;
+    border-color: #a5a5a5;
+    background-color: #ebeaea;
 }
 
 .channel-form-input::placeholder{
@@ -71,9 +76,9 @@
     width: 50%;
     border-radius: 0 0 0 15px;
     font-size: 25px;
-    border: white;
-    background-color: a5a5a5;
-    color: white;
+    border: var(--white);
+    background-color: var(--dark_gray);
+    color: var(--white);
     font-family: "Libre Bodoni", serif;
 }
 
@@ -83,8 +88,8 @@
     width: 50%;
     border-radius: 0 0 15px 0;
     font-size: 25px;
-    border: white;
-    background-color: 77CAD4;
-    color: white;
+    border: var(--white);
+    background-color: var(--mint_green);
+    color: var(--white);
     font-family: "Libre Bodoni", serif;
 }

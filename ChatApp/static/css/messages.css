@@ -1,35 +1,58 @@
 /* 各チャンネルチャットルームのCSS */
 
-
 /* ========================== ヘッダー部分 ============================= */
-
 header {
-    background-color: #77CAD4;
+    background-color: var(--mint_green);
+    font-family: "Libre Bodoni", serif;
+    height: 80px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: 80px;
-    width: 100%;
     position: fixed;
 }
 
 .chat-name {
-    font-family: "Libre Bodoni", serif;
-    color: white;
+    color: var(--white);
+    font-size: 30px;
+    padding-left: 2%;
+}
+
+nav > ul {
+    list-style: none;
+    padding: 0;
+    margin: 17px 0 0 0;
+    display: grid;
+    height: 100px;
+    grid-template-columns: 80px 100px;
+    gap: 10px;
+}
+
+.header-button{
+    color: var(--white);
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.header-button:hover {
+    color: var(--gray);
+}
+
+.header-button > i{
     font-size: 30px;
 }
 
-header ul {
-    font-family: "Libre Bodoni", serif;
-    display: flex;
-    color: white;
-    gap: 40px;
-}
-
-
+/* edit-channelのボタンを作る */
 
 /* ========================== メッセージ表示エリア ============================= */
-
+#no-message {
+    position: relative;
+    text-align: center;
+    color: var(--dark_gray);
+}
 
 
 /* ========================== メッセージ入力部分 ============================= */

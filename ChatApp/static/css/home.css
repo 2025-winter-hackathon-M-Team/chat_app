@@ -2,18 +2,21 @@
 
 /* ========================== ヘッダー部分 ============================= */
 header {
-    background-color: #77CAD4;
+    background-color: var(--mint_green);
+    font-family: "Libre Bodoni", serif;
+    height: 80px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    height: 80px;
-    width: 100%;
-    font-family: "Libre Bodoni", serif;
-    /* position: fixed; */
+    position: fixed;
 }
 
 .app-name {
-    color: white;
+    color: var(--white);
     font-size: 30px;
     padding-left: 2%;
 }
@@ -24,17 +27,18 @@ nav > ul {
     margin: 17px 0 0 0;
     display: grid;
     height: 100px;
-    grid-template-columns: 70px 90px;
+    grid-template-columns: 80px 100px;
+    gap: 10px;
 }
 
 .header-button{
-    color: white;
+    color: var(--white);
     font-size: 18px;
     text-decoration: none;
 }
 
 .header-button:hover {
-    color: #dadada;
+    color: var(--gray);
 }
 
 .header-button > i{
@@ -42,7 +46,7 @@ nav > ul {
 }
 
 /* ========================== contentsエリア ============================= */
-.contents{
+.home-contents{
     height: 450px;
     display: flex;
     flex-direction: row;
@@ -55,8 +59,9 @@ nav > ul {
 .channels-title {
     font-family: "Libre Bodoni", serif;
     color: #77CAD4;
-    border-bottom: 3px solid #77CAD4;
+    border-bottom: 3px solid var(--mint_green);
     display: inline-block;
+    font-size: 30px;
 }
 
 .main-categories > ul{
@@ -67,12 +72,25 @@ nav > ul {
 
 .main-category-list {
     font-family: "Zen Old Mincho", serif;
-    color: black;
+    color: var(--black);
     text-decoration: none;
     font-size: 30px;
     line-height: 70px;
 }
 
 .main-category-list > i{
-    color: #77CAD4;
+    color: var(--mint_green);
+    font-size: 30px;
+}
+
+.main-category-list .icon-bell-hover{
+    display: none;
+}
+
+.main-category-list:hover .icon-bell{
+    display: none;
+}
+
+.main-category-list:hover .icon-bell-hover{
+    display: inline;
 }
