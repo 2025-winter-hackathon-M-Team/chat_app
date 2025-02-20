@@ -14,12 +14,20 @@
         {% endif %}
         <nav>
             <ul>
-                <li><a href="/channels" role="button">
-                    <i class="fa-solid fa-house"></i>home
-                </a></li>
-                <li><a href="/signout" role="button">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>sign-out
-                </a></li>
+                <li>
+                    <a href="{{ url_for('main_category_view') }}" class="header-button">
+                        <i class="fa-solid fa-house"></i>
+                        <br>
+                        home
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('login_view') }}" class="header-button">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <br>
+                        sign-out
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>

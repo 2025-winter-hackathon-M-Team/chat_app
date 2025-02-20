@@ -15,7 +15,7 @@
                         home
                     </a>
                 </li>
-                <li class="signout-button">
+                <li>
                     <a href="{{ url_for('login_view') }}" class="header-button">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         <br>
@@ -25,17 +25,18 @@
             </ul>
         </nav>
     </header>
-    <div class="contents">
+    <div class="home-contents">
         <div>
             <h1 class="channels-title">CHANNELS</h1>
         </div>
         {# 各部屋の名前が並ぶ #}
         <div class="main-categories">
-            <ul class="main-category-list">
+            <ul>
                 {% for main_category in main_categories %}
                 <li>
                     <a href="/channels/{{ main_category.id }}" class="main-category-list">
-                        <i class="fa-regular fa-bell"></i>
+                        <i class="fa-regular fa-bell icon-bell"></i>
+                        <i class="fa-solid fa-bell icon-bell-hover"></i>
                         {{ main_category.main_category_name }}
                     </a>
                 </li>
