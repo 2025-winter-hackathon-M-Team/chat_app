@@ -225,9 +225,13 @@ def create_sub_category_view(cid):
     uid = session.get('uid')
     sub_category_name = request.form.get('sub_category_name')
     sub_category_description = request.form.get('sub_category_description')
-
-    Sub_category.create(uid, sub_category_name, sub_category_description, cid)
-
+    registered_sub_category_name = Sub_category.find_by_sub_category_name(sub_category_name)
+    if registered_sub_category_name != None:
+        return render_template('modal/error-create-channel.html') # チャンネル名重複の場合、エラーのhtmlを返す。必要に応じて、html名を変更して下さい。
+        #flash('既に同じ名前のチャンネルが存在します') # modalを使用する場合、コメントアウトを解除して下さい。
+    else:
+        Sub_category.create(uid, sub_category_name, sub_category_description, cid)
+    
     return redirect(url_for('sub_category_view', cid=cid))
 
 # サブカテゴリ名前、説明の更新
@@ -235,8 +239,12 @@ def create_sub_category_view(cid):
 def update_sub_category_view(scid):
     sub_category_name = request.form.get('sub_category_name')
     sub_category_description = request.form.get('sub_category_description')
-    
-    Sub_category.update(scid, sub_category_name, sub_category_description)
+    registered_sub_category_name = Sub_category.find_by_sub_category_name(sub_category_name)
+    if registered_sub_category_name != None:
+        return render_template('modal/error-create-channel.html') # チャンネル名重複の場合、エラーのhtmlを返す。必要に応じて、html名を変更して下さい。
+        #flash('既に同じ名前のチャンネルが存在します') # modalを使用する場合、コメントアウトを解除して下さい。
+    else: 
+        Sub_category.update(scid, sub_category_name, sub_category_description)
     
     sub_category = Sub_category.find_by_sub_category_id(scid)
     main_category_id = sub_category["main_category_id"]
