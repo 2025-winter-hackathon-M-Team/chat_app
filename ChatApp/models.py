@@ -151,6 +151,22 @@ class Sub_category:
         finally:
             db_pool.release(conn)
 
+    @classmethod
+    def find_by_sub_category_name(cls, sub_category_name):
+        conn = db_pool.get_conn()
+
+        try:
+            with conn.cursor() as cur:
+                sql = "SELECT * FROM sub_categories WHERE sub_category_name=%s;"
+                cur.execute(sql, (sub_category_name,))
+                sub_category = cur.fetchone()
+                return sub_category
+        except pymysql.Error as e:
+            print(f'エラーが発生しました。: {e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
 
 class Message:
     @classmethod
