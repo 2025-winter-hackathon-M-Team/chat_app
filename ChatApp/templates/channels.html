@@ -30,7 +30,7 @@
         <div class="sub-categories">
             {# クリックしたらモーダル表示  #}
             <span>
-                <button class="create-channel-button" id="create-channel-modalOpen">＋ 部屋を追加</button>
+                <button id="create-channel-modalOpen" class="create-channel-button">＋ 部屋を追加</button>
                 {% include 'modal/create-channel.html' %}
             </span>
             {% for sub_category in sub_categories %}
@@ -48,5 +48,9 @@
         </div>
     </div>
 </div>
+{% endblock %}{% block script %}
+<script
+  src="{{url_for('static',filename='js/modals/create-channel.js')}}"
+  type="module"
+></script>
 {% endblock %}
-{% block script %} {% endblock %}

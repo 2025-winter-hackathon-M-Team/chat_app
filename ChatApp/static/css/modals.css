@@ -18,6 +18,12 @@
     display: none;
 }
 
+#create-channel-modal.active,
+#update-channel-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .modal-content{
     background-color: var(--white);
     font-family: "Libre Bodoni", serif;
