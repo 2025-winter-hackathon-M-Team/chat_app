@@ -254,8 +254,8 @@ def chatroom_view(cid, scid):
 
 # メッセージを送信
 @app.route('/channels/<cid>/<scid>', methods=['POST'])
-def send_message(cid, scid):
-    uid = request.form.get('user_id')
+def send_message(cid, scid): 
+    uid = session.get('uid')
     user_info = User.find_by_uid(uid)
     username = user_info["username"]
     sub_category_id = request.form.get('sub_category')
