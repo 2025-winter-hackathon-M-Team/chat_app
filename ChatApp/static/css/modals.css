@@ -13,10 +13,17 @@
     align-items: center;
 }
 
-#create-channel-modal,
-#update-channel-modal {
+#create-channel-modal{
     display: none;
 }
+
+/*
+#update-channel-modal{
+    display: none;
+}
+*/
+
+
 
 .modal-content{
     background-color: var(--white);
