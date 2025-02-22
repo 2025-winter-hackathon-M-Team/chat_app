@@ -31,7 +31,7 @@
             </ul>
         </nav>
     </header>
-    <div class="message-area">
+    <div id="message-area" class="message-area">
         {%if messages|length > 0 %}
             {% for message in messages %}
             <div class="user-name">{{message.username}}</div>

@@ -14,14 +14,8 @@
 }
 
 #create-channel-modal,
-#update-channel-modal {
+#update-channel-modal{
     display: none;
-}
-
-#create-channel-modal.active,
-#update-channel-modal.active {
-    opacity: 1;
-    pointer-events: auto;
 }
 
 .modal-content{
