@@ -217,7 +217,32 @@ def main_category_view():
 @app.route('/channels/<cid>', methods=['GET'])
 def sub_category_view(cid):
     sub_categories = Sub_category.find_by_main_category_id(cid)
-    return render_template('channels.html', sub_categories=sub_categories)
+    return render_template('channels.html', sub_categories=sub_categories, main_category_id=cid)
+
+# サブカテゴリ追加
+@app.route('/channels/update/<cid>', methods=['POST'])
+def create_sub_category_view(cid):
+    uid = session.get('uid')
+    sub_category_name = request.form.get('sub_category_name')
+    sub_category_description = request.form.get('sub_category_description')
+
+    Sub_category.create(uid, sub_category_name, sub_category_description, cid)
+
+    return redirect(url_for('sub_category_view', cid=cid))
+
+# サブカテゴリ名前、説明の更新
+@app.route('/channels/update_channel/<scid>', methods=['POST'])
+def update_sub_category_view(scid):
+    sub_category_name = request.form.get('sub_category_name')
+    sub_category_description = request.form.get('sub_category_description')
+    
+    Sub_category.update(scid, sub_category_name, sub_category_description)
+    
+    sub_category = Sub_category.find_by_sub_category_id(scid)
+    main_category_id = sub_category["main_category_id"]
+
+    return redirect(url_for('chatroom_view', cid=main_category_id, scid=scid))
+
 
 # チャット画面表示
 @app.route('/channels/<cid>/<scid>', methods=['GET'])
