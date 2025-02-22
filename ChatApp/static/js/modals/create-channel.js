@@ -1,3 +1,4 @@
+/* 新しいチャンネルを作成するモーダルの制御 */
 'use strict';
 
 // export const initCreateChannelModal = () => {
