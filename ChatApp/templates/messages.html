@@ -5,14 +5,14 @@
 <div class="main-container">
     <header id="chat-header">
         <div class="room-name-and-button-container">
-        <p class="chat-name">{{ sub_categories.sub_category_name }}</p>
-        {# もしuidとチャンネル作成者が同じなら編集可能 #}
-        {% if uid == sub_categories.uid %}
-        <button id="update-channel-modalOpen" class="edit-button">
-            <i class="fa-solid fa-pencil"></i>Edit
-        </button>
-        {% include 'modal/update-channel.html' %}
-        {% endif %}
+            <p class="chat-name">{{ sub_categories.sub_category_name }}</p>
+            {# もしuidとチャンネル作成者が同じなら編集可能 #}
+            {% if uid == sub_categories.uid %}
+            <button id="update-channel-modalOpen" class="edit-button">
+                <i class="fa-solid fa-pencil"></i>Edit
+            </button>
+            {% include 'modal/update-channel.html' %}
+            {% endif %}
         </div>
         <nav>
             <ul>
@@ -34,11 +34,18 @@
         </nav>
     </header>
     <div id="message-area" class="message-area">
-        {%if messages|length > 0 %}
-            {% for message in messages %}
-            <div class="user-name">{{message.username}}</div>
-            <div class="message-box">{{ message.message }}</div>
-            {% endfor %}
+        {% if messages|length > 0 %}
+        {% for message in messages %} {% if message.uid == uid %}
+        <div class="my-messages">
+            <p class="user-name">{{message.username}}</p>
+            <p class="message-box right-box">{{ message.message }}</p>
+        </div>
+        {% else %}
+        <div class="other-messages">
+            <p class="user-name">{{message.username}}</p>
+            <p class="message-box left-box">{{ message.message }}</p>
+        </div>
+        {% endif %} {% endfor %}
         {% else %}
         <p id="no-message">まだメッセージがありません</p>
         {% endif %}
@@ -51,7 +58,7 @@
             action="/channels/{{ sub_categories.main_category_id }}/{{ sub_categories.id }}"
             method="POST"
         >
-            <textarea name="message" id="message" autofocus></textarea>
+            <textarea name="message" id="message" required autofocus></textarea>
             <input type="hidden" name="user_id" value="{{ uid }}" />
             <input 
                 type="hidden" 
@@ -68,6 +75,10 @@
 {% block script %} 
 <script
   src="{{url_for('static',filename='js/modals/update-channel.js')}}"
+  type="module"
+></script>
+<script
+  src="{{url_for('static',filename='js/scroll-message.js')}}"
   type="module"
 ></script>
 {% endblock %}
