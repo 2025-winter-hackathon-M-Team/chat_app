@@ -46,8 +46,104 @@ nav > ul {
 }
 
 /* edit-channelのボタンを作る */
+.room-name-and-button-container {
+    display: flex;
+    align-items: center;
+    margin: 0 3rem;
+    gap: 0.4rem;
+} 
+.edit-button {
+    display: flex;
+    align-items: center;
+    background-color: var(--white);
+    color: var(--dark_gray);
+    font-size: 1.2rem;
+    margin: 1.2rem 0.3rem;
+    padding: 0.4rem;
+    border-radius: 3px;
+    gap: 0.2rem;
+}
+
+.edit-button i {
+    font-size: 1.7rem;
+}
+
+.edit-button:hover {
+    background-color: var(--gray);
+}
 
 /* ========================== メッセージ表示エリア ============================= */
+#message-area {
+    min-height: 77vh;
+    width: 100%;
+    padding-top: 10vh;
+    padding-right: 20px;
+    padding-left: 20px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 16vh;
+    scroll-margin-bottom: 16vh;
+  }
 
 
 /* ========================== メッセージ入力部分 ============================= */
+.typing-box-wrapper {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    height: 18vh;
+    background-color: var(--white);
+    background-size: contain;
+    border-top: 3px solid lightgrey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .typing-box {
+    display: flex;
+    height: 70%;
+    width: 60%;
+    margin: 0;
+    justify-content: center;
+    background-color: var(--white);
+    border-radius: 8px;
+    border: solid 1px lightgrey;
+  }
+
+  .typing-box textarea {
+    background-color: var(--light_gray);
+    width: 100%;
+    padding: 0.5em;
+    border-radius: 8px;
+    
+  }
+  
+  .typing-box textarea:focus {
+    cursor: pointer;
+  }
+  
+  #add-message-button {
+    background-color: var(--white);
+    color: var(--mint_green);
+    height: 100%;
+    width: 40px;
+    padding: 0;
+    margin: 0;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+  
+  #add-message-button i {
+    font-size: 3rem;
+  }
+
+  #add-message-button:hover {
+    color: var(--dark_mint);
+  }
+  
