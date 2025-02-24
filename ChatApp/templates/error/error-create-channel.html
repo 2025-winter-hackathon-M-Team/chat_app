@@ -1,0 +1,17 @@
+{% extends 'error/base.html' %} {% block title %}
+<title>error | I Talk</title>
+{% endblock %} {% block body %}
+<body class="modal-error">
+    <div class="modal-error-wrapper">
+        <div class="modal-error-container">
+            <div class="modal-error-title">
+                <p>  SORRY </p>
+            </div>
+            <div class="modal-error-discription">
+                <p>{{ error_message }}</p>
+            </div>
+            <a href="{{url_for ('sub_category_view',cid=cid)}}">戻る</a>
+        </div>
+    </div>
+</body>
+{% endblock %}{% block script %} {% endblock %}

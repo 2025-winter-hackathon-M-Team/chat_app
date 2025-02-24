@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url_for('login_view') }}" class="header-button">
+                    <a href="{{ url_for('logout') }}" class="header-button">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                         <br>
                         sign-out
@@ -65,4 +65,9 @@
     </div>
 </div>
 {% endblock %}
-{% block script %} {% endblock %}
+{% block script %} 
+<script
+  src="{{url_for('static',filename='js/modals/update-channel.js')}}"
+  type="module"
+></script>
+{% endblock %}
