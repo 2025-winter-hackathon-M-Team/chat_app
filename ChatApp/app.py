@@ -43,7 +43,6 @@ socketio = SocketIO(app)
 @app.before_request
 def check_login():
     uid = session.get('uid')
-    print(uid)
     if uid is None and request.endpoint not in ['login_view', 'signup_view', 'signup_process', 'static']:
         return redirect(url_for('login_view'))
 
@@ -262,7 +261,7 @@ def update_sub_category_view(scid):
     registered_sub_category_name = Sub_category.find_by_sub_category_name(sub_category_name)
     if registered_sub_category_name != None:
         error_message ='既に同じ名前のチャンネルが存在します'
-        return render_template('error/error-update-channel.html', error_message=error_message, cid=cid, scid=scid)
+        return render_template('error/error-update-channel.html', error_message=error_message, cid=registered_sub_category_name['main_category_id'], scid=scid)
     else: 
         Sub_category.update(scid, sub_category_name, sub_category_description)
     
@@ -280,6 +279,8 @@ def chatroom_view(cid, scid):
         uid = session.get('uid')
         messages = Message.find_by_sub_category_id(scid)
         sub_category = Sub_category.find_by_sub_category_id(scid)
+        print(uid)
+        print(sub_category['uid'])
         return render_template('messages.html', uid=uid, messages=messages, sub_categories=sub_category)
     else:
         abort(404)
