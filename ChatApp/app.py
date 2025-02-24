@@ -1,6 +1,8 @@
 #必要なライブラリをインポート
 
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
+
 #アプリケーション開発に必要なモジュールをインストール
 from datetime import timedelta  #日時を扱うモジュール
 import re #reモジュール 
@@ -231,10 +233,6 @@ def main_category_view():
 @app.route('/channels/<cid>', methods=['GET'])
 def sub_category_view(cid):
     main_categories = Main_category.get_all()
-    print(main_categories)
-    print(type(main_categories))
-    print(cid)
-    print(type(cid))
     if any(main_category['id'] == int(cid) for main_category in main_categories):
         sub_categories = Sub_category.find_by_main_category_id(cid)
         return render_template('channels.html', sub_categories=sub_categories, main_category_id=cid)
@@ -249,8 +247,8 @@ def create_sub_category_view(cid):
     sub_category_description = request.form.get('sub_category_description')
     registered_sub_category_name = Sub_category.find_by_sub_category_name(sub_category_name)
     if registered_sub_category_name != None:
-        return render_template('modal/error-create-channel.html') # チャンネル名重複の場合、エラーのhtmlを返す。必要に応じて、html名を変更して下さい。
-        #flash('既に同じ名前のチャンネルが存在します') # modalを使用する場合、コメントアウトを解除して下さい。
+        error_message ='既に同じ名前のチャンネルが存在します'
+        return render_template('error/error-create-channel.html', error_message=error_message, cid=cid) 
     else:
         Sub_category.create(uid, sub_category_name, sub_category_description, cid)
     
@@ -263,9 +261,9 @@ def update_sub_category_view(scid):
     sub_category_description = request.form.get('sub_category_description')
     registered_sub_category_name = Sub_category.find_by_sub_category_name(sub_category_name)
     if registered_sub_category_name != None:
-        return render_template('modal/error-create-channel.html') # チャンネル名重複の場合、エラーのhtmlを返す。必要に応じて、html名を変更して下さい。
-        #flash('既に同じ名前のチャンネルが存在します') # modalを使用する場合、コメントアウトを解除して下さい。
-    else:
+        error_message ='既に同じ名前のチャンネルが存在します'
+        return render_template('error/error-update-channel.html', error_message=error_message, cid=cid, scid=scid)
+    else: 
         Sub_category.update(scid, sub_category_name, sub_category_description)
     
     sub_category = Sub_category.find_by_sub_category_id(scid)
