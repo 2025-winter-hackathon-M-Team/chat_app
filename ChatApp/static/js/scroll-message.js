@@ -1,5 +1,5 @@
 const element = document.getElementById("message-area");
-const offset = (16 * window.innerHeight) / 100;
+const offset = (18 * window.innerHeight) / 100;
 const elementBottom = element.getBoundingClientRect().bottom;
 
 window.scrollBy({

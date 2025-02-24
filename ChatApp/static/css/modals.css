@@ -11,6 +11,7 @@
     background-color: rgba(0,0,0,0.6);
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 #create-channel-modal,
@@ -21,7 +22,7 @@
 .modal-content{
     background-color: var(--white);
     font-family: "Libre Bodoni", serif;
-    margin: 15% auto;
+    margin: 13% auto;
     width: 55%;
     position: relative;
     border-radius: 15px;
