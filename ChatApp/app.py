@@ -1,11 +1,11 @@
 #必要なライブラリをインポート
 
-from flask import Flask, render_template, request, redirect,url_for, flash, session 
+from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
 #アプリケーション開発に必要なモジュールをインストール
 from datetime import timedelta  #日時を扱うモジュール
 import re #reモジュール 
 from flask_socketio import SocketIO,  emit  #socket通信を管理
-from  flask_login import  LoginManager,login_user,logout_user,login_required,current_user
+from  flask_login import  LoginManager, login_user, logout_user, login_required, current_user
 #ログイン情報などを管理
 from werkzeug.security import generate_password_hash, check_password_hash
 #パスワードを安全に扱う為の関数
@@ -33,18 +33,25 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] ='your_username'
 app.config['MYSQL_PASSWORD'] = 'your_password'
 app.config['MYSQL_DB'] ='your_database'
-
+app.config['DEBUG'] = True # 本番環境ではFalseにすること
 
 mysql = MySQL(app)
 socketio = SocketIO(app)
 
-
+@app.before_request
+def check_login():
+    uid = session.get('uid')
+    print(uid)
+    if uid is None and request.endpoint not in ['login_view', 'signup_view', 'signup_process', 'static']:
+        return redirect(url_for('login_view'))
 
 @app.route("/",methods=["GET"])
 def jump():
-    return redirect("/login") 
-
-
+    uid = session.get('uid')
+    if uid:
+        return redirect(url_for('main_category_view'))
+    else:
+        return redirect(url_for('login_view'))
 
 #ログインページの表示
 @app.route("/login",methods=["GET"])
@@ -57,14 +64,16 @@ def login_process():
     email = request.form.get('email')
     password = request.form.get("password")
 
+    # 入力項目チェック
+    if email =='' or password == '':
+        flash('未入力の項目があります。')
+        return redirect(url_for('login_view'))  
+    
     #メールアドレスの形式を検証
     if not re.match(EMAIL_PATTERN,email):
         flash("無効なメールアドレスの形式です")
         return redirect(url_for('login_view'))
     
-    if email =='' or password == '':
-        flash('メールアドレスを入力してください')
-        return redirect(url_for('login_view'))  
     
     user = User.find_by_email(email)
     if user is None:
@@ -86,94 +95,96 @@ def login_process():
 @app.route('/logout')
 def logout():
     session.clear()
+    #response = make_response('Session Cleared')
+    #response.set_cookie('session', '', expires=0)  # クッキーを無効化
     return redirect(url_for('login_view'))
 
-@socketio.on('chat_message')
-def handle_message(data):
-    username = data.get('username', 'Anonymous')  # ユーザー名がない場合は 'Anonymous'
-    message = data.get('message', '')
-    
-    # メッセージの保存（オプション）
-    cursor = mysql.connection.cursor()
-    cursor.execute("INSERT INTO messages (username, content) VALUES (%s, %s)", (username, message))
-    mysql.connection.commit()
-    
-    emit('chat_message', {'username': username, 'message': message}, broadcast=True)
-
-#チャットルームの作成
-@app.route('/create_room', methods=['POST'])
-@login_required
-def create_room():
-    name = request.form.get('name')
-    category_id = request.form.get('category_id')
-
-    if not name or not category_id:
-        flash('ルーム名とカテゴリを入力してください')
-        return redirect(url_for('room_list'))
-
-    cursor = mysql.connection.cursor()
-    cursor.execute("INSERT INTO chat_rooms (name, category_id) VALUES (%s, %s)", (name, category_id))
-    mysql.connection.commit()
-
-    flash('チャットルームが作成されました')
-    return redirect(url_for('room_list'))
-
-#チャットルームの編集
-@app.route('/update_room/<int:room_id>', methods=['POST'])
-@login_required
-def update_room(room_id):
-    new_name = request.form.get('new_name')
-    new_description = request.form.get('new_description')
-    new_category_id = request.form.get('new_category_id')
-
-    if not new_name:
-        flash('新しいルーム名を入力してください')
-        return redirect(url_for('room_list'))
-
-    cursor = mysql.connection.cursor()
-    
-    # 更新対象のカラムを選択的に変更
-    if new_description and new_category_id:
-        cursor.execute("UPDATE chat_rooms SET name = %s, description = %s, category_id = %s WHERE id = %s",
-                       (new_name, new_description, new_category_id, room_id))
-    elif new_description:
-        cursor.execute("UPDATE chat_rooms SET name = %s, description = %s WHERE id = %s",
-                       (new_name, new_description, room_id))
-    elif new_category_id:
-        cursor.execute("UPDATE chat_rooms SET name = %s, category_id = %s WHERE id = %s",
-                       (new_name, new_category_id, room_id))
-    else:
-        cursor.execute("UPDATE chat_rooms SET name = %s WHERE id = %s",
-                       (new_name, room_id))
-
-    mysql.connection.commit()
-    flash('チャットルームが更新されました')
-    return redirect(url_for('room_list'))
-
-#メッセージの送信
-@socketio.on('send_message')
-def send_message(data):
-    username = current_user.username  # ログインユーザーの名前
-    message = data['message']
-    room_id = data['room_id']
-
-    cursor = mysql.connection.cursor()
-    cursor.execute("INSERT INTO messages (username, room_id, content) VALUES (%s, %s, %s)", (username, room_id, message))
-    mysql.connection.commit()
-
-    emit('receive_message', {'username': username, 'message': message}, room=room_id)
-
-
-#メッセージの削除
-@app.route('/delete_message/<int:message_id>', methods=['POST'])
-@login_required
-def delete_message(message_id):
-    cursor = mysql.connection.cursor()
-    cursor.execute("DELETE FROM messages WHERE id = %s", (message_id,))
-    mysql.connection.commit()
-
-    flash('メッセージが削除されました')
-    return redirect(url_for('chat_view'))
+#@socketio.on('chat_message')
+#def handle_message(data):
+#    username = data.get('username', 'Anonymous')  # ユーザー名がない場合は 'Anonymous'
+#    message = data.get('message', '')
+#    
+#    # メッセージの保存（オプション）
+#    cursor = mysql.connection.cursor()
+#    cursor.execute("INSERT INTO messages (username, content) VALUES (%s, %s)", (username, message))
+#    mysql.connection.commit()
+#    
+#    emit('chat_message', {'username': username, 'message': message}, broadcast=True)
+#
+##チャットルームの作成
+#@app.route('/create_room', methods=['POST'])
+#@login_required
+#def create_room():
+#    name = request.form.get('name')
+#    category_id = request.form.get('category_id')
+#
+#    if not name or not category_id:
+#        flash('ルーム名とカテゴリを入力してください')
+#        return redirect(url_for('room_list'))
+#
+#    cursor = mysql.connection.cursor()
+#    cursor.execute("INSERT INTO chat_rooms (name, category_id) VALUES (%s, %s)", (name, category_id))
+#    mysql.connection.commit()
+#
+#    flash('チャットルームが作成されました')
+#    return redirect(url_for('room_list'))
+#
+##チャットルームの編集
+#@app.route('/update_room/<int:room_id>', methods=['POST'])
+#@login_required
+#def update_room(room_id):
+#    new_name = request.form.get('new_name')
+#    new_description = request.form.get('new_description')
+#    new_category_id = request.form.get('new_category_id')
+#
+#    if not new_name:
+#        flash('新しいルーム名を入力してください')
+#        return redirect(url_for('room_list'))
+#
+#    cursor = mysql.connection.cursor()
+#    
+#    # 更新対象のカラムを選択的に変更
+#    if new_description and new_category_id:
+#        cursor.execute("UPDATE chat_rooms SET name = %s, description = %s, category_id = %s WHERE id = %s",
+#                       (new_name, new_description, new_category_id, room_id))
+#    elif new_description:
+#        cursor.execute("UPDATE chat_rooms SET name = %s, description = %s WHERE id = %s",
+#                       (new_name, new_description, room_id))
+#    elif new_category_id:
+#        cursor.execute("UPDATE chat_rooms SET name = %s, category_id = %s WHERE id = %s",
+#                       (new_name, new_category_id, room_id))
+#    else:
+#        cursor.execute("UPDATE chat_rooms SET name = %s WHERE id = %s",
+#                       (new_name, room_id))
+#
+#    mysql.connection.commit()
+#    flash('チャットルームが更新されました')
+#    return redirect(url_for('room_list'))
+#
+##メッセージの送信
+#@socketio.on('send_message')
+#def send_message(data):
+#    username = current_user.username  # ログインユーザーの名前
+#    message = data['message']
+#    room_id = data['room_id']
+#
+#    cursor = mysql.connection.cursor()
+#    cursor.execute("INSERT INTO messages (username, room_id, content) VALUES (%s, %s, %s)", (username, room_id, message))
+#    mysql.connection.commit()
+#
+#    emit('receive_message', {'username': username, 'message': message}, room=room_id)
+#
+#
+##メッセージの削除
+#@app.route('/delete_message/<int:message_id>', methods=['POST'])
+#@login_required
+#def delete_message(message_id):
+#    cursor = mysql.connection.cursor()
+#    cursor.execute("DELETE FROM messages WHERE id = %s", (message_id,))
+#    mysql.connection.commit()
+#
+#    flash('メッセージが削除されました')
+#    return redirect(url_for('chat_view'))
 
 # サインアップページ表示
 @app.route('/signup', methods=['GET'])
@@ -190,23 +201,26 @@ def signup_process():
     
     if name == '' or email == '' or password == '' or password_confirmation == '':
         flash('未入力の項目があります。')
+        return redirect(url_for('signup_view'))
     
     if password != password_confirmation:
         flash('パスワードが一致しません。')
+        return redirect(url_for('signup_view'))
 
     if re.match(EMAIL_PATTERN, email) is None:
         flash('メールアドレスが正しい形式で入力されていません。')
+        return redirect(url_for('signup_view'))
 
     password = generate_password_hash(password)
     registered_user = User.find_by_email(email)
     if registered_user != None:
         flash('既に登録済みです。ログインページからログインして下さい。')
+        return redirect(url_for('signup_view'))
     else:
         User.create(name, email, password)
         user_info = User.find_by_email(email)
         session['uid'] = str(user_info["id"])
         return redirect(url_for('main_category_view')) 
-    return redirect(url_for('login_view'))
 
 @app.route('/channels', methods=['GET'])
 def main_category_view():
@@ -216,8 +230,16 @@ def main_category_view():
 # サブカテゴリページ表示
 @app.route('/channels/<cid>', methods=['GET'])
 def sub_category_view(cid):
-    sub_categories = Sub_category.find_by_main_category_id(cid)
-    return render_template('channels.html', sub_categories=sub_categories, main_category_id=cid)
+    main_categories = Main_category.get_all()
+    print(main_categories)
+    print(type(main_categories))
+    print(cid)
+    print(type(cid))
+    if any(main_category['id'] == int(cid) for main_category in main_categories):
+        sub_categories = Sub_category.find_by_main_category_id(cid)
+        return render_template('channels.html', sub_categories=sub_categories, main_category_id=cid)
+    else:
+        abort(404)
 
 # サブカテゴリ追加
 @app.route('/channels/update/<cid>', methods=['POST'])
@@ -243,7 +265,7 @@ def update_sub_category_view(scid):
     if registered_sub_category_name != None:
         return render_template('modal/error-create-channel.html') # チャンネル名重複の場合、エラーのhtmlを返す。必要に応じて、html名を変更して下さい。
         #flash('既に同じ名前のチャンネルが存在します') # modalを使用する場合、コメントアウトを解除して下さい。
-    else: 
+    else:
         Sub_category.update(scid, sub_category_name, sub_category_description)
     
     sub_category = Sub_category.find_by_sub_category_id(scid)
@@ -255,14 +277,18 @@ def update_sub_category_view(scid):
 # チャット画面表示
 @app.route('/channels/<cid>/<scid>', methods=['GET'])
 def chatroom_view(cid, scid):
-    uid = session.get('uid')
-    messages = Message.find_by_sub_category_id(scid)
-    sub_category = Sub_category.find_by_sub_category_id(scid)
-    return render_template('messages.html', uid=uid, messages=messages, sub_categories=sub_category)
+    sub_categories = Sub_category.find_by_main_category_id(cid)
+    if any(sub_category['id'] == int(scid) for sub_category in sub_categories):
+        uid = session.get('uid')
+        messages = Message.find_by_sub_category_id(scid)
+        sub_category = Sub_category.find_by_sub_category_id(scid)
+        return render_template('messages.html', uid=uid, messages=messages, sub_categories=sub_category)
+    else:
+        abort(404)
 
 # メッセージを送信
 @app.route('/channels/<cid>/<scid>', methods=['POST'])
-def send_message(cid, scid): 
+def send_message(cid, scid):
     uid = session.get('uid')
     user_info = User.find_by_uid(uid)
     username = user_info["username"]
@@ -283,5 +309,5 @@ def internal_server_error(error):
 
 
 if __name__ == '__main__':
-    socketio.run(app,host="0.0.0.0",debug=True,allow_unsafe_werkzeug=True)
+    socketio.run(app, host="0.0.0.0", debug=True, use_reloader=True, allow_unsafe_werkzeug=True)
 
