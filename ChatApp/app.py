@@ -43,7 +43,7 @@ socketio = SocketIO(app)
 @app.before_request
 def check_login():
     uid = session.get('uid')
-    if uid is None and request.endpoint not in ['login_view', 'signup_view', 'signup_process', 'static']:
+    if uid is None and request.endpoint not in ['login_process','login_view', 'signup_view', 'signup_process', 'static']:
         return redirect(url_for('login_view'))
 
 @app.route("/",methods=["GET"])
@@ -69,20 +69,17 @@ def login_process():
     if email =='' or password == '':
         flash('未入力の項目があります。')
         return redirect(url_for('login_view'))  
-    
+
     #メールアドレスの形式を検証
     if not re.match(EMAIL_PATTERN,email):
         flash("無効なメールアドレスの形式です")
         return redirect(url_for('login_view'))
-    
-    
+
     user = User.find_by_email(email)
     if user is None:
-            flash('ユーザーが存在しません')
-            return redirect(url_for('login_view')) 
-        
-    
-    
+        flash('ユーザーが存在しません')
+        return redirect(url_for('login_view')) 
+
     if not check_password_hash(user["password"], password):
         flash('パスワードが間違っています！')
         return redirect(url_for('login_view'))
@@ -279,9 +276,7 @@ def chatroom_view(cid, scid):
         uid = session.get('uid')
         messages = Message.find_by_sub_category_id(scid)
         sub_category = Sub_category.find_by_sub_category_id(scid)
-        print(uid)
-        print(sub_category['uid'])
-        return render_template('messages.html', uid=uid, messages=messages, sub_categories=sub_category)
+        return render_template('messages.html', uid=int(uid), messages=messages, sub_categories=sub_category)
     else:
         abort(404)
 
