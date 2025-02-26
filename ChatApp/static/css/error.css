@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   background-color: var(--white);
-  font-family: "Libre Bodoni", "Zen Old Mincho", sans-serif;
+  font-family: "Libre Bodoni", "Zen Old Mincho";
 }
 
 .error-container {
@@ -22,7 +22,7 @@
   align-items: center;
 }
 
-.error-num {
+.error-title {
   font-size: 6em;
   font-weight: 500;
   
@@ -30,17 +30,24 @@
 .error-description {
   text-align: center;
   display: flex;
-  justify-content: center;
+  align-items: center;
   flex-direction: column;
   margin-top: 6rem;
+}
+
+.error-description > p {
+  font-size: 1.3rem;
+  color: var(--blue_gray);
+  font-weight: 100;
 }
 
 .error-button {
   display: inline-block;
   text-decoration: none;
-  font-size: 18px;
-  margin-top: 1rem;
-  padding: 0.6em 6em;
+  font-size: 23px;
+  width: 15rem;
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.8rem;
   color: var(--white);
   background-color: var(--mint_green);
 }
