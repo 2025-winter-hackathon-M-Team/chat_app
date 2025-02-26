@@ -1,16 +1,16 @@
 {% extends 'error/base.html' %} {% block title %}
 <title>error | I Talk</title>
 {% endblock %} {% block body %}
-<body class="modal-error">
-    <div class="modal-error-wrapper">
-        <div class="modal-error-container">
-            <div class="modal-error-title">
-                <p>  SORRY </p>
+<body class="error">
+    <div class="error-wrapper">
+        <div class="error-container">
+            <div>
+                <p class="error-title">SORRY</p>
             </div>
-            <div class="modal-error-discription">
+            <div class="error-description">
                 <p>{{ error_message }}</p>
+                <a class="error-button" href="{{url_for ('sub_category_view',cid=cid)}}">Back</a>
             </div>
-            <a href="{{url_for ('sub_category_view',cid=cid)}}">戻る</a>
         </div>
     </div>
 </body>

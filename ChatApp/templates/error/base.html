@@ -5,10 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block title %}{% endblock %}
-    <link rel ="stylesheet" href="static/css/base.css"/>
-    <link rel ="stylesheet" href="static/css/color.css"/>
-    <link rel ="stylesheet" href="static/css/error.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;500;600;700;800;900&family=Old+Zen+Mincho:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel ="stylesheet" href="{{ url_for('static',filename='css/base.css')}}"/>
+    <link rel ="stylesheet" href="{{ url_for('static',filename='css/color.css')}}"/>
+    <link rel ="stylesheet" href="{{ url_for('static',filename='css/error.css')}}"/>
+    {# Google Fontsから使うフォントのリンク #}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link 
+        href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&family=Source+Code+Pro&family=Zen+Old+Mincho:wght@400;500&display=swap" 
+        rel="stylesheet"
+    />
   </head>
   <body>
     {% block body %}{% endblock %}
