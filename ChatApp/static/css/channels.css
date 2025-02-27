@@ -82,8 +82,8 @@ nav > ul {
     display: inline-block;
     width: 300px;
     height: 63px;
+    line-height: 63px;
     font-size: 30px;
-    padding: 8px 0 7px 0;
     color: var(--black);
     border: 2px solid var(--gray);
     background-color: var(--light_gray);
